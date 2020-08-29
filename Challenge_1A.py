@@ -1,25 +1,5 @@
+
 import numpy as np
-import tkinter as tk
-from tkinter import ttk
-
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import(
-	FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.figure import Figure
-#import matplotlib.animation as animation
-from matplotlib import style
-from matplotlib.patches import FancyArrowPatch
-
-from itertools import combinations, product
-from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.proj3d import proj_transform
-
-LARGE_FONT= ("Verdana", 12)
-
-class SeaofBTCapp(tk.Tk):
-
-   import numpy as np
 import tkinter as tk
 from tkinter import ttk
 
@@ -49,20 +29,61 @@ class Vector_transform(tk.Tk):
         
         
         container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand = True)
+        
+        container.pack(side=tk.RIGHT, fill="both", expand = True)
         container.grid_rowconfigure(0, weight=1)
+        container.grid_rowconfigure(5, pad=7)
         container.grid_columnconfigure(0, weight=1)
+        container.grid_columnconfigure(3, pad=7)
+        
 
         self.frames = {}
 
-        if graphImbedded :
+       
+        frame = graphImbedded(container, self)
+        self.frames[graphImbedded] = frame
+        frame.grid(row=0, column=0, sticky="nsew")
+        
 
-            frame = graphImbedded(container, self)
+        button1 = tk.Button(container, text= "Translate in x")
+        button1.grid(column=1,row=1,pady=3, sticky=tk.W)
+        entry1 = tk.Entry(container, width=20)
+        entry1.grid(column=2,row=1,padx=4,pady=0,sticky=tk.W)
 
-            self.frames[graphImbedded] = frame
+        button2 = tk.Button(container, text= "Translate in y")
+        button2.grid(column=1,row=2,pady=3, sticky=tk.W)
+        entry2 = tk.Entry(container, width=20)
+        entry2.grid(column=2,row=2,padx=4,pady=0,sticky=tk.W)
 
-            frame.grid(row=0, column=0, sticky="nsew")
+        button3 = tk.Button(container, text= "Translate in z")
+        button3.grid(column=1,row=3,pady=6, sticky=tk.W)
+        entry3 = tk.Entry(container, width=20)
+        entry3.grid(column=2,row=3,padx=4,pady=0,sticky=tk.W)
 
+        button4 = tk.Button(container, text= "Rotate in x")
+        button4.grid(column=1,row=4,pady=6, sticky=tk.W)
+        entry4 = tk.Entry(container, width=20)
+        entry4.grid(column=2,row=4,padx=4,pady=0,sticky=tk.W)
+        
+        button5 = tk.Button(container, text="Rotate in y")
+        button5.grid(column=1,row=5,pady=3, sticky=tk.W)
+        entry5 = tk.Entry(container, width=20)
+        entry5.grid(column=2,row=5,padx=4,pady=0,sticky=tk.W)
+        
+        button6 = tk.Button(container, text="Rotate in z")
+        button6.grid(column=1,row=6,pady=6, sticky=tk.W)
+        entry6 = tk.Entry(container, width=20)
+        entry6.grid(column=2,row=6,padx=4,pady=0,sticky=tk.W)
+
+        button7 = tk.Button(container, text="Stretch")
+        button7.grid(column=1,row=7,pady=6, sticky=tk.W)
+        entry7 = tk.Entry(container, width=20)
+        entry7.grid(column=2,row=7,padx=4,pady=0,sticky=tk.W)
+                         
+        button8 = tk.Button(container, text="Reflect")
+        button8.grid(column=1,row=8,pady=6, sticky=tk.W)
+        entry8 = tk.Entry(container, width=20)
+        entry8.grid(column=2,row=8,padx=4,pady=0,sticky=tk.W)
         self.show_frame(graphImbedded)
 
     def show_frame(self, cont):
@@ -88,19 +109,19 @@ class graphImbedded(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Graph Page!", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        
-        button1 = ttk.Button(self, text="translate", command = lambda: controller.show_frame(graphImbedded))
-        button1.pack()
-        
-        button2 = ttk.Button(self, text="rotate", command = lambda: controller.show_frame(graphImbedded))
-        button2.pack()
-        
-        button3 = ttk.Button(self, text="reflect", command = lambda: controller.show_frame(graphImbedded))
-        button3.pack()
-        
-        button4 = ttk.Button(self, text = "stretch", command = lambda: controller.show_frame(graphImbedded))
-        button4.pack()
-        
+
+##        button1 = ttk.Button(self, text="translate", command = lambda: controller.show_frame(graphImbedded))
+##        button1.place(relx=1,rely=1)
+##        
+##        button2 = ttk.Button(self, text="rotate", command = lambda: controller.show_frame(graphImbedded))
+##        button2.place(x=550,y=200)
+##        
+##        button3 = ttk.Button(self, text="reflect", command = lambda: controller.show_frame(graphImbedded))
+##        button3.pack(side=tk.RIGHT)
+##        
+##        button4 = ttk.Button(self, text = "stretch", command = lambda: controller.show_frame(graphImbedded))
+##        button4.pack(side=tk.RIGHT)
+##        
        
         fig = Figure(figsize=(5,5), dpi=100)
         canvas = FigureCanvasTkAgg(fig, master=self)
@@ -126,7 +147,10 @@ class graphImbedded(tk.Frame):
         e = Arrow3D([0,1],[0,0],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="k")
         f = Arrow3D([0,0],[0,-1],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="k")
 
-
+        ax.set_xlabel('x axis')
+        ax.set_ylabel('y axis')
+        ax.set_zlabel('z axis')
+        
         ax.add_artist(vector_1)
         ax.add_artist(vector_2)
         ax.add_artist(vector)
@@ -139,7 +163,6 @@ class graphImbedded(tk.Frame):
         
         
 
-        
 
         toolbar = NavigationToolbar2Tk(canvas, self)
         toolbar.update()
@@ -149,4 +172,3 @@ class graphImbedded(tk.Frame):
 
 app = Vector_transform()
 app.mainloop()
-

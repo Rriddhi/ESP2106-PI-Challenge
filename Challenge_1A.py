@@ -2,6 +2,7 @@
 import numpy as np
 import tkinter as tk
 from tkinter import ttk
+import numpy as np
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
@@ -17,6 +18,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.proj3d import proj_transform
 
 LARGE_FONT= ("Verdana", 12)
+#starting arrays for the 
+arr_1= [[0,0,0]]
+arr_2= [[0,0,0]]
 
 class Vector_transform(tk.Tk):
 
@@ -26,6 +30,50 @@ class Vector_transform(tk.Tk):
 
        # tk.Tk.iconbitmap(self, default="clienticon.ico")
         tk.Tk.wm_title(self, "Vector transformation app")
+
+        #Creates a 3D array 
+        
+
+        def retrieve_input(textBox):
+            inputValue= textBox.get()
+            ls=[]
+            #To perfom mathematical manupulations here to abtain vector.
+            #V_1 refers to the translation vector(i.e green vector on the diagram),
+            #V_2 refers to the input vector(ie cyan vector on the diagram)
+            if textBox == get_transVector_input:
+                a= get_transVector_input.get()#gets the tkinter object value
+                for i in a.split(","):
+                    ls.append(int(i))
+                    V_1 = ls
+                arr_1.append(V_1)
+            if textBox == get_vector_input:
+                a = get_vector_input.get()
+                for i in a.split(","):
+                    ls.append(int(i))
+                    V_2 = ls
+                arr_2.append(V_2)
+##            if textBox == entry1:
+##                print(inputValue)
+##                #to insert in the translation in x direction calculation
+##            if textbox == entry2:
+##                #to insert in the translation in y direcrion calculation
+##            if textbox == entry3:
+##                #to insert in the translation in z direcrion calculation
+##            if textbox == entry4:
+##                # rotation in x calculation
+##            if textbox == entry5:
+##                #rotation in y calculation
+##            if textbox == entry6:
+##                #rotation in z calculation
+##            if textbox == entry7:
+##                #stretch calculation
+##            if textbox == entry8:
+##                #Reflect calculation
+           
+            print(V_1)
+            print(arr_1)
+            print(arr_2)
+            textBox.delete(0, 'end')
         
         
         container = tk.Frame(self)
@@ -43,44 +91,54 @@ class Vector_transform(tk.Tk):
         frame = graphImbedded(container, self)
         self.frames[graphImbedded] = frame
         frame.grid(row=0, column=0, sticky="nsew")
-        
 
-        button1 = tk.Button(container, text= "Translate in x")
+        
+        get_vector_input= tk.Entry(container, width=20)
+        get_vector_input.grid(column=0,row=1,pady=3, padx=3, sticky=tk.W)
+        vector_button= tk.Button(container, text= "Input Vector", command = lambda: retrieve_input(get_vector_input))
+        vector_button.grid(column=0, row=2,pady=6, padx=3, sticky=tk.W)
+
+        get_transVector_input= tk.Entry(container, width=20)
+        get_transVector_input.grid(column=0,row=3,pady=6, padx=3, sticky=tk.W)
+        vector_button= tk.Button(container, text= "Translation Vector", command = lambda: retrieve_input(get_transVector_input))
+        vector_button.grid(column=0, row=4,pady=3, padx=3, sticky=tk.W)
+        
+        button1 = tk.Button(container, text= "Translate in x", command=lambda:retrieve_input(entry1))
         button1.grid(column=1,row=1,pady=3, sticky=tk.W)
         entry1 = tk.Entry(container, width=20)
         entry1.grid(column=2,row=1,padx=4,pady=0,sticky=tk.W)
 
-        button2 = tk.Button(container, text= "Translate in y")
+        button2 = tk.Button(container, text= "Translate in y", command = lambda: retrieve_input(entry2))
         button2.grid(column=1,row=2,pady=3, sticky=tk.W)
         entry2 = tk.Entry(container, width=20)
         entry2.grid(column=2,row=2,padx=4,pady=0,sticky=tk.W)
 
-        button3 = tk.Button(container, text= "Translate in z")
+        button3 = tk.Button(container, text= "Translate in z",command = lambda: retrieve_input(entry3))
         button3.grid(column=1,row=3,pady=6, sticky=tk.W)
         entry3 = tk.Entry(container, width=20)
         entry3.grid(column=2,row=3,padx=4,pady=0,sticky=tk.W)
 
-        button4 = tk.Button(container, text= "Rotate in x")
+        button4 = tk.Button(container, text= "Rotate in x", command = lambda: retrieve_input(entry4))
         button4.grid(column=1,row=4,pady=6, sticky=tk.W)
         entry4 = tk.Entry(container, width=20)
         entry4.grid(column=2,row=4,padx=4,pady=0,sticky=tk.W)
         
-        button5 = tk.Button(container, text="Rotate in y")
+        button5 = tk.Button(container, text="Rotate in y", command = lambda: retrieve_input(entry5))
         button5.grid(column=1,row=5,pady=3, sticky=tk.W)
         entry5 = tk.Entry(container, width=20)
         entry5.grid(column=2,row=5,padx=4,pady=0,sticky=tk.W)
         
-        button6 = tk.Button(container, text="Rotate in z")
+        button6 = tk.Button(container, text="Rotate in z",command = lambda: retrieve_input(entry6))
         button6.grid(column=1,row=6,pady=6, sticky=tk.W)
         entry6 = tk.Entry(container, width=20)
         entry6.grid(column=2,row=6,padx=4,pady=0,sticky=tk.W)
 
-        button7 = tk.Button(container, text="Stretch")
+        button7 = tk.Button(container, text="Stretch", command = lambda: retrieve_input(entry7))
         button7.grid(column=1,row=7,pady=6, sticky=tk.W)
         entry7 = tk.Entry(container, width=20)
         entry7.grid(column=2,row=7,padx=4,pady=0,sticky=tk.W)
                          
-        button8 = tk.Button(container, text="Reflect")
+        button8 = tk.Button(container, text="Reflect", command = lambda: retrieve_input(entry8))
         button8.grid(column=1,row=8,pady=6, sticky=tk.W)
         entry8 = tk.Entry(container, width=20)
         entry8.grid(column=2,row=8,padx=4,pady=0,sticky=tk.W)
@@ -92,7 +150,7 @@ class Vector_transform(tk.Tk):
         frame.tkraise()
 
         
-
+#Class generates the arrows to be drawn in the graph 
 class Arrow3D(FancyArrowPatch):
     def __init__(self, xs, ys, zs, *args, **kwargs):
         FancyArrowPatch.__init__(self, (0,0), (0,0), *args, **kwargs)
@@ -109,19 +167,6 @@ class graphImbedded(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Graph Page!", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-
-##        button1 = ttk.Button(self, text="translate", command = lambda: controller.show_frame(graphImbedded))
-##        button1.place(relx=1,rely=1)
-##        
-##        button2 = ttk.Button(self, text="rotate", command = lambda: controller.show_frame(graphImbedded))
-##        button2.place(x=550,y=200)
-##        
-##        button3 = ttk.Button(self, text="reflect", command = lambda: controller.show_frame(graphImbedded))
-##        button3.pack(side=tk.RIGHT)
-##        
-##        button4 = ttk.Button(self, text = "stretch", command = lambda: controller.show_frame(graphImbedded))
-##        button4.pack(side=tk.RIGHT)
-##        
        
         fig = Figure(figsize=(5,5), dpi=100)
         canvas = FigureCanvasTkAgg(fig, master=self)
@@ -135,10 +180,11 @@ class graphImbedded(tk.Frame):
                 ax.plot3D(*zip(s,e), color="b")
         ax.scatter([0],[0],[0],color="g",s=100)
         
+        #To get variables of 
         
-        vector = Arrow3D([1,1],[0.5,1],[0.3,1], mutation_scale=20, lw=1, arrowstyle="-|>", color="m")
-        vector_1 = Arrow3D([1,0],[0.5,0],[0.3,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="g")
-        vector_2= Arrow3D([0,1],[0,1],[0,1], mutation_scale=20, lw=1, arrowstyle="-|>", color="c")
+        vector = Arrow3D([1,-1],[-1,1],[0,1], mutation_scale=20, lw=1, arrowstyle="-|>", color="m")
+        vector_1 = Arrow3D([1,0],[-1,0],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="g")
+        vector_2= Arrow3D([0,-1],[0,1],[0,1], mutation_scale=20, lw=1, arrowstyle="-|>", color="c")
 
         a = Arrow3D([0,0],[0,1],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="k")
         b = Arrow3D([0,-1],[0,0],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="k")
@@ -160,9 +206,6 @@ class graphImbedded(tk.Frame):
         ax.add_artist(d)
         ax.add_artist(e)
         ax.add_artist(f)
-        
-        
-
 
         toolbar = NavigationToolbar2Tk(canvas, self)
         toolbar.update()

@@ -22,9 +22,9 @@ from mpl_toolkits.mplot3d.proj3d import proj_transform
 from matplotlib.artist import Artist 
 
 
+
 LARGE_FONT= ("Verdana", 15)
 small_font = ("Verdana", 7)
-global vec
 
 #starting arrays for the vectors
 #arr_1 contains the vectors for translation
@@ -38,9 +38,11 @@ ax = fig.add_subplot(111, projection="3d")
 ax.mouse_init()
 
 r = [-10, 10]
+ax.set_xlim3d(r[0], r[1])
 ax.set_ylim3d(r[0], r[1])
 ax.set_zlim3d(r[0], r[1])
 
+global vec
 '''Functions for the mathematical computation for the plane equation'''
 # ax + by + cz = d  -- > (a,b,c,d)
 def dotproduct(vector1, vector2):
@@ -148,27 +150,27 @@ def animate(i):
     ax.set_zlabel('z axis')
 
 
-'''Class that computes and transforms the given vector'''    
+'''Class that computes and transforms the given vector'''          
 class Vector_transform(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         
         tk.Tk.__init__(self, *args, **kwargs)
 
+       # tk.Tk.iconbitmap(self, default="clienticon.ico")
         tk.Tk.wm_title(self, "Vector transformation app")
         print("******************************************************************************* ")
         print(" Cyan = Input Vector, Green = Translation Vector, Magenta = Resultant Vector\n")
         print(" Input Vector & Translation Vector  i.e 1,2,3 \n Translate & Stretch  i.e 2 \n Rotate as i.e 30 \n Reflect i.e 0,1,-2,0")
         print("******************************************************************************* \n")
-	
         #Creates a 3D array 
+
         def retrieve_input(textBox):
             
 
             global arr_1 
             global arr_2
             global count
-
             ls=[]
             
             if textBox == clear_transformation:
@@ -187,12 +189,13 @@ class Vector_transform(tk.Tk):
                 arr_2.pop()
            
             elif textBox!= clear_transformation:
-                inputValue= textBox.get()
-                      
+                inputValue= textBox.get()  
+                
+            
+            
             #To perfom mathematical manupulations here to abtain vector.
             #V_1 refers to the translation vector(i.e green vector on the diagram),
             #V_2 refers to the input vector(ie cyan vector on the diagram)
-                
             if textBox == get_transVector_input:
                 a= get_transVector_input.get() #gets the tkinter object value 
                 for i in a.split(","):
@@ -200,7 +203,6 @@ class Vector_transform(tk.Tk):
                     V_1 = ls
                 arr_1.append(V_1)
                 textBox.delete(0, 'end')
-                
             if textBox == get_vector_input:
                 a = get_vector_input.get()
                 for i in a.split(","):
@@ -218,7 +220,6 @@ class Vector_transform(tk.Tk):
                 V_1 = [a[0] + round(float(entry1.get()),2),a[1], a[2]]
                 arr_1.append(V_1)
                 textBox.delete(0, 'end')
-                
             if textBox == entry2:
                 #to insert in the translation in y direcrion calculation
                 if len(arr_1)>1:
@@ -228,7 +229,6 @@ class Vector_transform(tk.Tk):
                 V_1 = [a[0],a[1] + round(float(entry2.get()),2),0, a[2]]
                 arr_1.append(V_1)
                 textBox.delete(0, 'end')
-                
             if textBox == entry3:
                 #to insert in the translation in z direcrion calculation
                 if len(arr_1)>1:
@@ -238,7 +238,6 @@ class Vector_transform(tk.Tk):
                 V_1 = [a[0],a[1], a[2] + round(float(entry3.get()),2)]
                 arr_1.append(V_1)
                 textBox.delete(0, 'end')
-                
             if textBox == entry4:
                 # rotation in x calculation
                 ang_rad = (round(float(entry4.get()),2)/180)*pi
@@ -253,8 +252,7 @@ class Vector_transform(tk.Tk):
                         n.append(value)
                 V_2=n
                 arr_2.append(V_2)      
-                textBox.delete(0, 'end')
-                
+                textBox.delete(0, 'end')    
             if textBox == entry5:
                 #rotation in y calculation
                 ang_rad = (round(float(entry5.get()),2)/180)*pi
@@ -270,7 +268,6 @@ class Vector_transform(tk.Tk):
                 V_2=n
                 arr_2.append(V_2)
                 textBox.delete(0, 'end')
-                
             if textBox == entry6:
                 #rotation in z calculation
                 ang_rad = (round(float(entry6.get()),2)/180)*pi
@@ -309,6 +306,7 @@ class Vector_transform(tk.Tk):
                 arr_2.append(V_2)
                 textBox.delete(0, 'end')
                 
+
             if textBox == entry9:
                 #stretch Z calculation
                 if len(arr_2)>1:
@@ -319,7 +317,9 @@ class Vector_transform(tk.Tk):
                 V_2 = [a[0]*n,a[1], a[2]]
                 arr_2.append(V_2)
                 textBox.delete(0, 'end')
-                 
+                
+                
+                
             if textBox == entry10:
                 #Reflect along a plane calculation
                 n = entry10.get()
@@ -457,7 +457,7 @@ class Arrow3D(FancyArrowPatch):
         xs, ys, zs = proj_transform(xs3d, ys3d, zs3d, renderer.M)
         self.set_positions((xs[0],ys[0]),(xs[1],ys[1]))
         FancyArrowPatch.draw(self, renderer)
-        
+
 '''class draws the canvas for the 3D graph'''
 class graphImbedded(tk.Frame):
     def __init__(self, parent, controller):
@@ -473,7 +473,10 @@ class graphImbedded(tk.Frame):
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-      
+
+
+            
 app = Vector_transform()
 ani = animation.FuncAnimation(fig,animate, interval=1000)
 app.mainloop()
+
